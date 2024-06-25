@@ -1,0 +1,236 @@
+🫵In nodejs every single file is treated as module
+🫵Module is object that we have access to in each and every node js module
+
+NPM packages follows semantic version notation three digit --> major version , minor version and patch version
+so new version may affect the code if our code is written in old version.
+
+so we can check packages which are deprecated by command  -------------> npm outdated 
+this command will display table of outdated packages.
+Package  Current Wanted Latest  Location
+slugify   I.O.O  1.3.4   1.3.4
+
+
+we can also download the specific version of any package using -------------> npm i slugify@1.0.0
+
+✅ Instead of ^ (minor and patch releases) this symbol we can use ~ symbol for strictly that patch version which is safe side * symbol bumps all the versions
+
+✅ We can update package by npm update slugify 
+✅ We can delete any package by npm uninstall slugify
+✅ Package.lock.json file contains info about dependancies of dependancies along with versions
+✅ Whenever we share our code must provide Package.lock.json and Package.json file
+______________________________________________________________________________________________________________________________________
+
+✅ Event loop does the orchestration means it receives events , calls there call back functions, and offloads there more expensive tasks to the thread pool, event loop that makes asynchronous programming possible in node
+
+1.nexttick()
+2.setImmediate()   -> it depends on polling phase 
+3.setTimeout()
+
+/We can change the size of thread pool from 4 to requied
+process.env.UV_THREADPOOL_SIZE = 1 ; //we have decreased it from 4 to 1
+______________________________________________________________________________________________________________________________________
+
+Nodes event driven architecture
+
+Event emmiter ---------------------> Event listner -------> callBacks
+		emits event 			     calls 
+______________________________________________________________________________________________________________________________________
+
+Streams :
+✅ When we read files using Streams , we read part of the data do something with it and free our memory , we repeat this
+until the entire file processing e.g. youtube and netflix follows the same principle --> Instead of loading full videos 
+process by piece by piece
+
+✅ Steams are useful for handling large volumes of data
+
+✅ More efficient in terms of  memory 
+✅ Streams are instances of EventEmmiter class
+
+______________________________________________________________________________________________________________________________________'
+
+✅ require functions is called with a module name as the argument the path to the modules file has been resolved into
+  file loaded all the code has been wrapped into wrapper function which has then executed after execution it will 
+  return exports of required module then after first time loading they are cached 
+
+______________________________________________________________________________________________________________________________________
+Callback hell is just a problem with nested callbacks we can resolve these problem using 
+promises so promises are just like packages which are filled in future means when we are getting 
+data in future in beginning we have promise but it is pending promise once we get data in it
+it becomes resolved promise .
+
+✅ resolved promise eighter can be fullfilled(it have our required data)or rejected(it have error)
+✅ .then(callback) it only deals with fullfilled promises for rejected we have to use catch method
+______________________________________________________________________________________________________________________________________
+✅ Building promises
+   1. we will return new Promise(resolve,reject) reject have error and resolve(data) this data is then available
+   in then(data=>{}) means resolve getting data passes to then
+   2. if(err) reject("error") whatever in reject then it available to catch(err)
+______________________________________________________________________________________________________________________________________
+✅ Instead of consuming promises with then method , we can use async await 
+✅ async await is also known syntactic sugar for promises
+✅ await always used inside the as function
+✅ Async function returns promises , in order to display we use then method and for error we use catch method but in trys catch we have 
+	to throw error
+✅ Async functions runs in background while other code is in event loop 
+______________________________________________________________________________________________________________________________________
+✅Express do not put body dat on to request, hence we have to use middleware
+✅Middleware is just a function that can modify the incoming request data , its called middleware because it stands 
+  between middle in req and res.
+✅ Object.assign({},{}) which allows us to create a new object by merging two existing objects
+✅ app.get('/api/vl/tours/:id, (req, res) => {
+     console. log ( req. params),}) 
+✅Params ->object that  all the parameters of all the variables we defined there are stored (:id in above code )
+
+✅ We can add also optional parameters /:id? now id becomes option means whenever we hitting url we can or cannot specify id
+✅ In javascript if we have one string which is numberer e.g "45" that when multiply with 1 e.g. "45"*1 => 45
+
+✅ For updating we have 2 methods put and patch
+   put -> we expect that our application recieves entire new upsated object 
+   patch -> we only expect th properties that actually be updated on object
+______________________________________________________________________________________________________________________________________
+
+
+✅ We can refactor our routes -> app.route().get(------)
+✅ middleware -> request rsponse cycle , starts with incoming request then executing all the middleware
+    in the middleware stack step by step (.next()) and finally sending the response to finish the cycle 
+
+✅   Order lots matter in ✅Express becuse when we put our custom middleware below route it ends req-res cycle
+      means when we keep custom middleware in between gettours and by id 
+
+✅ e.g we require Date at one of the route then we use middleware to fetch the date from req and then use it in route 
+✅ middlewares are executed in the sequence they are defined
+______________________________________________________________________________________________________________________________________
+Third party middleware function called morgan
+✅ It allows us to see request data right in console 
+
+✅ mounting => in order to use it in different files
+
+const tourRoute = express.Router(); // one separate route for each resource
+const UserRoute = express.Router();
+app.use('/api/v1/tours',tourRoute)
+app.use('/api/v1/users',tourRoute)
+
+✅ When we use exports. and them we require it in another file we get all that multiple exports in one object
+    {so we can destructure it by same names } or we can use that object.name
+
+ ✅WE can keep only middlewares in our app.js 
+ 1->take routes from app.js make them middleware using mounting
+ 2-> put them in routes folder (run and check whether everything is working properly)
+ 3->  take all route handlers and make another folder as controller
+ 4->  paste and export them
+ 5-> require them in routes
+ 6-> create server .js in which put all the server/db related things 
+ 7-> export our app from app.js (because we keep all the things related to expreess in app)
+ ✅ Param middleware is the middleware that only runs with certain parameters
+    in Param middleware function we actually get access to a fourth argument which is the 
+    value of parameter in question
+
+______________________________________________________________________________________________________________________________________
+✅ These is known as chaining middlewares ->
+    router.route('/').get(tourController.getTours).post(tourController.createTour)
+    if we want to add middleware for any perticular method e.g. post(), then 
+    just add as a first parameter e.g. post(middlewarefunction ,tourController.createTour)
+
+✅ we can serve static files from a folder from not a route then we have to use inbult middleware as
+
+   app.use(express.static('dir_name'))  for each part of website there is different request
+
+✅ environment variables : NODE ENV=development nodemon server. js
+   instead of keeping all environment in command we can keep them in one file
+   1. create file
+   2. put variables in it
+   3. npm i dotenv
+   4. require dotenv and 
+
+
+✅ npm i eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-config-airbnb eslint-plugin-node eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react --save-dev
+______________________________________________________________________________________________________________________________________________________________________________________________________
+
+🔥Mongoose
+✅ Mongoose is object data modelling (ODM) library for MongoDB and Node js , gives higher level of abstraction
+✅ Mongoose allows for rapid and simple development of mongodb datdabase interactions
+✅ Featues : 1.schemas to model data and relationships 
+              2. Easy data Validation
+              3. simple query API
+              4.middleware etc   
+✅ Mongoose schema : where we model our data by describing the structure of the data , default values and Validation
+
+✅ Mongoose -> models (to create model we requires schema) -> blueprints -> we use to create document
+_____________________________________________________________________________________________________________________________________
+✅ We can create document by two ways 
+1. schema , model , save({});
+2. model.create({});
+
+✅ If we trying to do add more fields than schema the it will simply ignores that field
+   and add only specified fields.
+
+✅ req.query() --> gives us the object which we passed as a query #express functionality
+
+✅ In mongoose there are two ways to writing database queries
+   1. using filter object
+   2. using some special mongoose methods
+
+✅ If we have to create shallow copy of a object then we can simply destructure the object 
+      e.g const newShallowCopyObj = {...req.query};
+
+✅ Query.prototype() means we query chya instance s vr methods apply kru shkto 
+      mhnun we use karu shkto different methods mhnje ch chaining
+
+✅ In order to use chain multiple methods we build the query first and then execute it
+_____________________________________________________________________________________________________________________________________
+
+✅Aggregation pipeline -> powerful framework for data Aggregation
+   All documents from certain colection passes through pipeline inorder to transform
+   them into a aggreagate results
+   e.g we can use it to calculate Average , min and max values
+
+_____________________________________________________________________________________________________________________________________
+✅ Virtual properties are the fields that we can define on our schema but that not will persisted
+      so that will not be saved into database
+✅ Used for the fields that can be derived from one another e.g.  conversion of miles to KM
+
+✅ We use regular functions in mongoose because ()=> arrow function does not have access to
+      to this keyword , and this is referes to current document in this functions 
+✅ we can use it along with schema defination{} ,{toJSON:{virtuals:true},toObject:{virtuals:true}}schema options
+✅ We cannot use Virtual property in queries ass they are not part of database
+_____________________________________________________________________________________________________________________________________
+✅ document middleware -> pre and post 
+   1.pre ('hookName',function(next)) we have access to current doc by this
+   2. post ('hookName',function(doc,next)) we have access to document directly
+//DOCUMENT middleware : runs after only .save(), .create()
+tourSchema.post('save',function(doc,next) {
+    console.log(doc);
+    next();
+});
+
+_____________________________________________________________________________________________________________________________________
+✅ Query middleware -> pre and post query execution 
+      we have access to query object
+✅ Aggregation middleware -> pre and post means before Aggregation and after Aggregation
+
+      we simply have to use in all of the Aggregations so we can simply not copy paste at all places
+_____________________________________________________________________________________________________________________________________
+
+✅ Data Validation in mongoose  on data coming from model
+    it is process of checking entered values are in right format in each field for our document schema and that values
+    actually been entered for all the required fields.
+
+✅ Sanitization : which is to ensure that the inputted data is is basically clean , i.e. there is no malicious
+    code injected in database, means never ever accept the inpputted data as it is from users
+
+_____________________________________________________________________________________________________________________________________
+✅error handling:-
+
+✅ 1. Undefined routes :-> app.all('*', (req,res,next)) for all routes that we mention after actual  routes at last 
+      (same as Angular)..
+
+✅ 2. For express we write global express erro handling middleware which will handle all errors
+         coming from all over application (central err handling middleware)
+   🔥 whenever we pass argument to next(''), express will automatically know that there ways  
+      an an error and that applies to every next function in every next middleware
+      so it will assume that there is error and it will skip all the middlewares in stack and sent error
+      that we passed to our global handling middleware(mhanje jith parameter ala tithun direct flow towrads global middleware)
+
+
+✅ Instead of creating own error we can create our own Err class as a good practice
+✅ stackStrace gives info that where the error happens
