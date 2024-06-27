@@ -234,3 +234,17 @@ ________________________________________________________________________________
 
 ✅ Instead of creating own error we can create our own Err class as a good practice
 ✅ stackStrace gives info that where the error happens
+
+_____________________________________________________________________________________________________________________________________
+✅ We are not making mongoose errors as isOPerational but we have to make them operational 
+     to make them more clear
+   we will destructure the err object and make ir operational
+_____________________________________________________________________________________________________________________________________
+
+✅ Unhandled rejections :
+    whenever Unhandled rejection somewhere in our application the process object will emmit the object called Unhandled rejection
+    so we can subscribe to that event 
+   
+✅ Whenever we have any issue with database connection our application is not gonna work so we can simply
+    so we can do here shutdown our application by process.exit(0/1) 0 is for suceess and 1 for uncaught exception
+    so 1) we can shutdown the server first and then 2) we can use  process.exit(1) (1 for uncaught exception)

@@ -1,5 +1,12 @@
 const dotenv = require('dotenv')
 
+
+process.on('uncaughtException', err=>{
+    console.log('\nUNHANDLED Exception !!! 🔥  shutting down.......\n');
+    console.log(err.name, err.message);
+    process.exit(1);
+})
+
 dotenv.config({path:'./config.env'})
 
 const mongoose = require('mongoose')
@@ -22,8 +29,25 @@ mongoose//.connect(process.env.DATABASE_LOCAL,{
 // console.log(process.env);
 //we can start server in this way
 const port = process.env.port || 3000;
-app.listen(port,()=>{
+const server = app.listen(port,()=>{
     console.log(`Server is started on port ${port}............`);
 })
+
+
+//unhandledException
+// all the async errors outsidde express app are handled here
+process.on('unhandledRejection',err =>{
+    
+    console.log('\nUNHANDLED REJECTION !!! 🔥  shutting down.......\n');
+    console.log(err.name, err.message);
+    //we have to also turn off server 
+    server.close(()=>{
+        process.exit(1);
+    })
+})
+
+
+
+
 
 
