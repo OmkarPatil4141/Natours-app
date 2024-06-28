@@ -248,3 +248,16 @@ ________________________________________________________________________________
 ✅ Whenever we have any issue with database connection our application is not gonna work so we can simply
     so we can do here shutdown our application by process.exit(0/1) 0 is for suceess and 1 for uncaught exception
     so 1) we can shutdown the server first and then 2) we can use  process.exit(1) (1 for uncaught exception)
+
+_____________________________________________________________________________________________________________________________________
+✅ Authentication and authorization :->
+    1] created user schema
+    2] separate route for signup which is not in rest architecture
+    3] validator for confirm password
+    4] Encryption of password using pre save middleware and using bcryptjs(returns a promise) package it gonna add random string to the password
+         so that two equal passwords do not same  hash.
+    5] JWT : it is a stateless solution for authetication so there is no need to store any session state on the server
+               (restful apis are always be stateless)
+      
+      Working of JWT :
+      1)users client starts by making a post request 

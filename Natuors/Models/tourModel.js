@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const slugify = require('slugify')
-const validator = require('validator')
+// const validator = require('validator')
 
 const tourSchema = new mongoose.Schema({
     // name:String ---> we can specify in that way mongoose uses native javascript datatpes

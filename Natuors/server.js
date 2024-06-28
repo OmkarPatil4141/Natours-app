@@ -1,6 +1,6 @@
 const dotenv = require('dotenv')
 
-
+// all the sync errors outsidde express app are handled here
 process.on('uncaughtException', err=>{
     console.log('\nUNHANDLED Exception !!! 🔥  shutting down.......\n');
     console.log(err.name, err.message);
@@ -13,7 +13,6 @@ const mongoose = require('mongoose')
 
 const app = require('./app')
 
-// const DB = process.env.DATABASE.replace('<PASSWORD>',process.env.DB_PASSWORD)
 const DB = process.env.DATABASE.replace('<password>', process.env.DB_PASSWORD)
 
 console.log(process.env.DATABASE);
