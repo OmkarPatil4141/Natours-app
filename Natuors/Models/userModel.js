@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
         
         type:String,
         required:[true,'Please provide a password'],
-        minlength: 8
+        minlength: 8,
+        select:false //do not show password to user
 
     },
 
@@ -50,7 +51,7 @@ userSchema.pre('save', async function(next){
     // if password is modified then only run
     if(!this.isModified('password')) return next();
 
-    this.password = await bcrypt.hash(this.password,16) //that cost parameter is CPU intensive
+    this.password = await bcrypt.hash(this.password,12) //that cost parameter is CPU intensive
 
     //delete PasswordConfirm field (required to input not persisted to database)
     this.passwordConfirm = undefined;
@@ -58,6 +59,13 @@ userSchema.pre('save', async function(next){
 
 
 })
+
+//Comparing passwords
+
+userSchema.methods.correctPassword = async function(candidatePassword,userPassword){
+    
+    return await bcrypt.compare(candidatePassword,userPassword);
+}
 
 const User = mongoose.model('User',userSchema);
 

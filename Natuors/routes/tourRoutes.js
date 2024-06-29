@@ -3,6 +3,9 @@ const express = require('express')
 //requiring route handlers (controllers)
 const tourController = require('../controllers/tourController')
 
+const authController = require('./../controllers/authController')
+
+
 //mounting
 const router = express.Router();
 
@@ -23,7 +26,7 @@ router
 
 router
 .route('/')
-.get(tourController.getTours)
+.get(authController.protect,tourController.getTours)
 .post(tourController.createTour)
 // .post(tourController.checkBody,tourController.createTour)
 

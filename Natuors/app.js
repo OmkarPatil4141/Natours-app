@@ -25,11 +25,12 @@ app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
 
 // Custom Middleware  it is going to run for all requestss
-/*app.use((req,res,next)=>{
-    console.log("Hello from the Middleware👋");
+app.use((req,res,next)=>{
+    
     req.requestTime = new Date().toISOString();
+    console.log(req.headers);
     next();
-}) */
+}) 
 
 
 /*

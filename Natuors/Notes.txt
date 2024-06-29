@@ -261,3 +261,32 @@ ________________________________________________________________________________
       
       Working of JWT :
       1)users client starts by making a post request 
+
+
+
+
+
+
+_____________________________________________________________________________________________________________________________________
+
+✅ 1)Instead of creating user by simply just req body as it is we get security flaw as everyone log in as a admin so we can 
+   change code  const newUser =  await User.create(req.body) ❌ 
+
+ ✅ jsonwebtoken package mainly contains two methods as :
+      1)jwt.sign('payload','secret',(when the jwt will expire ....{}))  config.env is a perfect place to 
+      to mention our secret while mentioning secret it is imp that using the standard HSA 256 Encryption for the signature 
+      secret should at least be 32 characters long
+
+✅2) Checking on /login whether password and email is correct or not and if correct then we are sending token 
+      and also implemented /getUsers. For checking password we can use bcrypt twice means on non encrypted one we can 
+      do it in userModel.  we are using instance method so an instance method is a method that is gone be available
+      on on all documents of a certain collection 
+      userSchema.methods.correctedpass()  -> here select:false for password hence we dont use this.password
+
+✅ 3) Protected route 1 before user request getallTours we have to check he is logged in or not  so before it we can use
+      mmiddleware before each handlers in that middleware we are 1] getting token and check of its there
+      2] validate token  (verify that token) 3] check user that accessing route still exist 4] check if user changed
+      password after token was issued
+      👉Common practice to send a token using http header with request -> so we use key:Authorization and value as
+         Bearer 456wyuhkmfwpouqwflwurgcb  it is standard for token and for token value we use split
+
