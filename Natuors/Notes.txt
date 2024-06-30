@@ -255,7 +255,7 @@ ________________________________________________________________________________
     2] separate route for signup which is not in rest architecture
     3] validator for confirm password
     4] Encryption of password using pre save middleware and using bcryptjs(returns a promise) package it gonna add random string to the password
-         so that two equal passwords do not same  hash.
+         so that two equal passwords do not same hash.
     5] JWT : it is a stateless solution for authetication so there is no need to store any session state on the server
                (restful apis are always be stateless)
       
@@ -289,4 +289,27 @@ ________________________________________________________________________________
       password after token was issued
       👉Common practice to send a token using http header with request -> so we use key:Authorization and value as
          Bearer 456wyuhkmfwpouqwflwurgcb  it is standard for token and for token value we use split
+_____________________________________________________________________________________________________________________________________
+✅ 1) completing Protected route function :->
+      2] verify the token : we can use jwt.verify(token[means payload], secret, (callback)) verify is a asynchronous function
+            we are using built in promisify function , in order to use it we have to use util module
+            result of this is decoded payload from JWT
+         ✅ We get JsonWebTokenError so we can handle that error in err controller
+         ✅ We get JsonWebTokenError so we can handle that error in err controller
+      
+      3]what if user is deleted but its token still exist:
+            simply we find that user using findbyid and id is we have in payload
+      
+      4] If the password changed after token issue so we can use instance method and we are creating new field in model to store the password
+
+      2) Advance Postman setup:
+         We can specify couple of variables for each of environment e.g. url
+         We also write js scripts in test section
+      
+      3) Authorization:
+         ✅ We can authorize certain type of users to acess something means it verifies certai user have the rights or not inorder to access something
+
+         ✅ lets implelment middleware function that certian user role can delete tours 
+            1. we can implelment 2 middlewares one for checking admin is logged in or not and second for it is admin or not
+
 

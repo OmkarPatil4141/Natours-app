@@ -205,7 +205,7 @@ exports.createTour = catchAsync(async(req,res,next) =>{
 exports.delteTour = catchAsync(async(req,res,next)=>{
  
         // const del = await Tour.deleteOne(req.params.id)
-        await Tour.findByIdAndDelete(req.params.id);
+      const tour =   await Tour.findByIdAndDelete(req.params.id);
         //{_id:"666d7cd402379557e484e691"}
 
         //added 404 error with 
