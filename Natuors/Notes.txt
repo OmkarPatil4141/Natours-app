@@ -341,5 +341,33 @@ ________________________________________________________________________________
     //4) log user in , send JWT 
 
     ✅ We do not use findbyIdAndUpdate because it will not work on custom validators in schema
+_____________________________________________________________________________________________________________________________________
+1) Allow user to manipulate user data:(in userController)  => user itself can change only name and email
+   1) create errro if user posts Password data
+   2) Fitered out unwanted fields names there are not allowed to updated (because anyone can change role there)
+   3) update user document
 
+2) Allow user to delete itself : we are not deleting document from database we simply deactivate it so in future user can login
+            1) we are creating active field and setting it upto false
+            2) using qury middleware we are not showing that user in getUsers
 
+3) Security practices that we have to follows
+4) Sending JWT via Cookie :
+
+   Cookie: Cookie is small piece of text that a server can send to clients then when clients recieves a cokkie
+            it will automatically store it and automatically send it along with all future requests to user and 
+            so again browser automatically stores Cookie and sends it back to all future requests to that server
+             where it can came from
+
+5) Rate limiting : prevent  to many request from same ip 
+      1) we can implement as a global middleware if too many requests from same IP then block that request
+         we are using npm i express-rate-limit for it 
+
+6) setting important secuity http headers using a npm i helmet which is also middlewarefunction 
+
+7) Data Sanitization : 1) npm i express-mongo-sanitize
+                        2) npm uninstall xss
+8) preventing parameter pollution: express make array of query parameters and we cannot apply split on it
+                  so prevent it npm i hpp   => http parameter pollution to delete duplicate fields
+                  {{URL}}api/v1/tours?sort=duration&sort=price  it will simply take last one means tours sort by 
+                  price only

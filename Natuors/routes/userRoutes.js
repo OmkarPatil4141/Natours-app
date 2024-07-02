@@ -9,6 +9,8 @@ const authController = require('./../controllers/authController')
 
 const router = express.Router()
 
+router.patch('/updateMe', authController.protect, userController.updateMe)
+router.delete('/deleteMe', authController.protect, userController.deleteMe)
 router.patch('/updateMyPassword',authController.protect,authController.updatePassword)
 
 router.post('/signup', authController.signup)

@@ -4,16 +4,33 @@ const morgan = require('morgan')
 
 const AppError = require('./utils/appError')
 
+const rateLimit = require('express-rate-limit')
+
+const helmet = require('helmet');
+
+const mongoSanitize = require('express-mongo-sanitize')
+
+const xss = require('xss-clean')
+
+const hpp = require('hpp')
+
 const globalErrorHandler = require('./controllers/errorController')
 
 const app = express();
 
 
 
+
+
 ///////////////////////////////////////////////////////
-// //Middlewares
+// // Global Middlewares
 //////////////////////////////////////////////////////
 
+
+//secuity http headers
+app.use(helmet())
+
+//development logging 
 if(process.env.NODE_ENV === 'development')
 {
     app.use(morgan('dev'))
@@ -21,14 +38,41 @@ if(process.env.NODE_ENV === 'development')
 
 }
 
-app.use(express.json())
+const limiter = rateLimit({
+    max:100, //max requst
+    windowMs:60 * 60 * 1000, //per that much time    
+    message:'To many requests from an IP please try again in an hour!!'
+})
+
+//rateLimit returs a middleWare
+app.use('/api',limiter);
+
+//Body parser, rading data from the body into req.body
+app.use(express.json({limit:'10kb'}))
+
+//Data sanitization against NOSQL query injection 
+app.use(mongoSanitize());
+
+
+//Data sanitization against XSS injection 
+app.use(xss());
+
+//prevent parameter pollution 
+app.use(hpp({
+    whitelist:[
+        'duration'
+    ]
+}));
+
+
+//serving static files
 app.use(express.static(`${__dirname}/public`))
 
-// Custom Middleware  it is going to run for all requestss
+// Custom Middleware  it is going to run for all requests (test )
 app.use((req,res,next)=>{
     
     req.requestTime = new Date().toISOString();
-    console.log(req.headers);
+    // console.log(req.headers);
     next();
 }) 
 
