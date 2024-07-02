@@ -312,4 +312,34 @@ ________________________________________________________________________________
          ✅ lets implelment middleware function that certian user role can delete tours 
             1. we can implelment 2 middlewares one for checking admin is logged in or not and second for it is admin or not
 
+_____________________________________________________________________________________________________________________________________
+
+1) Password reset : 
+   ✅ First of all user send a post request to forgot password route only with this email address this will then  
+         create a reset token(not a JWT token) sent it to email address provided 
+      1. we will fetch user based on email and check that exist or not 
+      2. we create a reset token( use instance method ) using crypto module crypto.randomBytes(32).toString('hex') //32 :length of token and then
+         converting to hexadecimal string   
+2)  User sends that token from his email along with a new password in order to update his password
+      1. In utils folder create a function for how to send mail in node js using nodemailer
+         1. we have to create a transporter => it is a service that actuallly send an email e.g. GMAIL but we are not going to use 
+            gmail for production apps because there is limit on mails and if we exceed limit then they treat us as spammer
+         2. we need to define email options 
+         3. actual send the email with nodemailer
+
+3) setting a new password based on reset token:
+      //1) get user based on token
+       // 2) only if token has not expired and there a user then set new password
+       // 3) update changedPasswordAt property for user 
+    // 4) Log the user in , send JWT 
+
+4) A logged in user to update his password without having to forget it:
+
+   //1) Get the user from collection 
+    //2) Check if POSTED current password is corrrect 
+    //3) if so, update the password
+    //4) log user in , send JWT 
+
+    ✅ We do not use findbyIdAndUpdate because it will not work on custom validators in schema
+
 

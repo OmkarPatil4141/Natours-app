@@ -2,6 +2,7 @@ const dotenv = require('dotenv')
 
 // all the sync errors outsidde express app are handled here
 process.on('uncaughtException', err=>{
+    console.log(err);
     console.log('\nUNHANDLED Exception !!! 🔥  shutting down.......\n');
     console.log(err.name, err.message);
     process.exit(1);
@@ -38,6 +39,7 @@ const server = app.listen(port,()=>{
 process.on('unhandledRejection',err =>{
     
     console.log('\nUNHANDLED REJECTION !!! 🔥  shutting down.......\n');
+    console.log(err);
     console.log(err.name, err.message);
     //we have to also turn off server 
     server.close(()=>{

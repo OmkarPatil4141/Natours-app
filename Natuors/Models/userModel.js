@@ -1,7 +1,9 @@
+const crypto = require('crypto')
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { validate } = require('./tourModel');
 const bcrypt = require('bcryptjs')
+
 
 
 const userSchema = new mongoose.Schema({
@@ -50,7 +52,9 @@ const userSchema = new mongoose.Schema({
         }
     },
 
-    passwordChangedAt: Date
+    passwordChangedAt: Date,
+    passwordResetToken:String,
+    passwordResetExpires:Date
 
 })
 
@@ -70,6 +74,16 @@ userSchema.pre('save', async function(next){
 
 })
 
+
+userSchema.pre('save' , function(next){
+    if(!this.isModified('password') || this.isNew) return next();
+
+    this.passwordChangedAt = Date.now() - 1000;  //token  created after passord changed
+    next();
+
+})
+
+
 //Comparing passwords
 
 userSchema.methods.correctPassword = async function(candidatePassword,userPassword){
@@ -79,9 +93,6 @@ userSchema.methods.correctPassword = async function(candidatePassword,userPasswo
 
 // checking changed password or not
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
-
-    
-
     if(this.passwordChangedAt){
         const changedTimestamp = parseInt(this.passwordChangedAt.getTime()/1000, 10);
         return JWTTimestamp < changedTimestamp; // 100 < 200
@@ -89,6 +100,20 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
 
     //false means not changed passsword
     return false;
+}
+
+//create reset token
+userSchema.methods.createPasswordResetToken = function(){
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    console.log({ resetToken }, this.passwordResetToken);
+
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+    return resetToken; //we have to send plane token 
 }
 
 const User = mongoose.model('User',userSchema);
