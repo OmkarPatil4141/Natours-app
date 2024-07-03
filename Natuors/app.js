@@ -60,7 +60,12 @@ app.use(xss());
 //prevent parameter pollution 
 app.use(hpp({
     whitelist:[
-        'duration'
+        'duration',
+        'ratingsQuantity',
+        'ratingsAverage',
+        'maxGroupSize',
+        'difficulty',
+        'price'
     ]
 }));
 

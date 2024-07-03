@@ -371,3 +371,90 @@ ________________________________________________________________________________
                   so prevent it npm i hpp   => http parameter pollution to delete duplicate fields
                   {{URL}}api/v1/tours?sort=duration&sort=price  it will simply take last one means tours sort by 
                   price only
+_____________________________________________________________________________________________________________________________________
+
+👊 Advance Mongoose Section :-
+
+1) Types of relationships between data :
+   a) 1:1  ->  1 movie -> 1 name
+   b) 1:many 1) 1:few ---------> 1 movie: few award
+             2) 1:many --------> 1 movie : many reviws
+             3) 1:ton ---------> 1 app : ton logs
+
+   c) many:many  -> movie : actors
+
+
+2) ✅Referencing <SQL>  vs ✅Embedding <NOSQL>
+   a) In a Referenced (child Referencing) form we keep two related datasets and  all the documents separated
+
+   b) In No-SQL databases we simply denormalize data simply by Embedding documents into the main document
+      (✅ this will help to increase our performance 
+                  BUT
+         ❌ We cant query the embedded data but requirement of our application to query so we have to use normalized design
+      )
+
+3) When to embed and when to denormalize it will be decided in three of steps combinly
+
+                                        🫵Embed                                   🫵Reference
+   1.relation type                         1:1                                         1:many
+                                           1:many                                      1:ton
+                                                                                       many:many
+
+   2. Data access patterns                 a) Data is mostly read                 a) Data is updated a lot
+                                           b) Data does not change quickly        b) low read/write ratio
+                                          c) high read/write ratio
+                                            (more reading than writing)
+
+   3. Data closeness                      Dataset really belonging together         we frequently need to query 
+                                                                                    both datasets on their own
+
+
+4) Types of Referencing 
+
+      a) child Referencing                          b) Parent Referencing                      c) Two way Referencing
+
+         ✅ best for 1:few                          ✅ best for 1:ton                       ✅ best for many:many
+         ✅ for 1:Many can exceed max               ✅ best for 1:many
+            doc size which is 16MB
+
+5) 👊 The Natours data model :
+
+      Entity Set:  User, tours, bookings reviews, Locations
+
+      relationships : 1) user to reviews  1: many  -> means 1 user can give many reviews and we can use parent Referencing
+                         means our parent is user and each review is child and each review contais id pf user(parent)
+
+                     2) tour to reviews  1: many 
+                     3) tours to Locations   -> few : few means many : many and we use Embedding in tours we embed Locations as there are 
+                                                                        few Locations
+                     4) tours to users -> few to few  --> we have role as guide 
+                        tour can have few users (guides) and a tour guide can also be guiding  a few tours 
+                        ✅Eighter we can use embedding or child Referencing
+
+                     5) tours to bookings  1:many  one tour have many bookings -->   parent Referencing
+
+                     6) users to bookings   1:many  one user have many bookings     --> parent Referencing
+
+6) geospetial 
+
+      Our Location data embedded into tours hence we can declare everything related to Locations in tour
+      ✅ geospetial data is the data that describes places on earth using longitude and latitude coordinates
+
+         Inorder to use geospetial data we have to create a object with atleanst two fields  
+         startLocation:{
+        //GeoJSON 
+        type:{
+          type:String,
+          default:'Point',
+          enum:['Point'] 
+        },
+        coordinates:[Number]
+        }
+
+         ✅ Inorder to embed docs we have to create an array e.g. locations
+
+7)Embed user documents into tour document -> guides array in schema and ---> pre middleware for saving
+
+8) lets keep tour and user two separate entities in database by just Referencing
+   we expect the type of each element in guide array is to be mongoDB ID and just ref:'User'  and we do not require
+   even User imported 

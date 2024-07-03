@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Tour = require('../../Models/tourModel');
 
 // Load environment variables from .env file
-dotenv.config({path: '../../config.env'});
+dotenv.config({path: './../../config.env'});
 
 console.log(process.env.DATABASE);
 
@@ -27,7 +27,7 @@ mongoose.connect(DB, {
   .catch(err => console.error('DB connection error:', err));
 
 // Read file synchronously
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 // Import data into DB
 const importData = async () => {
