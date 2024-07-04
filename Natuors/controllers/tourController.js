@@ -148,7 +148,6 @@ exports.createTour = catchAsync(async(req,res,next) =>{
     //Execute Query
     const features = new APIFeature(Tour.find(),req.query).filter().sort().limitFields().paginate();
     const tours = await features.query;
-
         res.status(200).json({
             "status":"success",
             result : tours.length,
@@ -161,7 +160,7 @@ exports.createTour = catchAsync(async(req,res,next) =>{
 
  exports.getTour = catchAsync(async(req,res,next)=>{
    
-        const tour = await Tour.findById(req.params.id);
+        const tour = await Tour.findById(req.params.id)
         // instead by findID we can use findone like
         // Tour.findOne({_id:666d7cd402379557e484e691})
 

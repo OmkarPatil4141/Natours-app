@@ -129,12 +129,16 @@ const tourSchema = new mongoose.Schema({
           day:Number
     },
     // guides:Array
-    guides:[
-        {
+    guides:[{
             type:mongoose.Schema.ObjectId,
             ref:'User'
-        }
-    ]
+        }]
+    
+    // reviews:[     instead we use virtual populate
+    //     { 
+    //         type:mongoose.Schema.ObjectId,
+    //     }
+    // ]
 
 },
 {
@@ -146,6 +150,17 @@ const tourSchema = new mongoose.Schema({
 tourSchema.virtual('durationWeeks').get(function(){
     return this.duration/7;
 })
+
+//defining virtul populate
+tourSchema.virtual('reviews',{
+    ref:'Review',
+    foreignField:'tours',   
+    localField:'_id'
+
+})
+
+
+
 
 //DOCUMENT middleware : runs before .save(), .create()
 
@@ -181,7 +196,13 @@ tourSchema.post('save',function(doc,next) {
 */
 
 //Query Middleware 
-
+tourSchema.pre(/^find/,function(next){
+    this.populate({
+        path:'guides',
+        select:'-__v -passwordChangedAt'
+    });
+    next();
+})
  
 //it does not run for gettour as there is different handler and
 //there we have used FindById() so instead of making different miidleware we can use regular expression
@@ -202,10 +223,10 @@ tourSchema.post(/^find/, function(docs,next){
 
 //Aggregation middleware
 
-tourSchema.pre('aggregate',function(next){
-    this.pipeline().unshift({$match:{secretTour:{$ne:true}}})
-    next();
-})
+// tourSchema.pre('aggregate',function(next){
+//     this.pipeline().unshift({$match:{secretTour:{$ne:true}}})
+//     next();
+// })
 //In order to use schema we have to use model
 const Tour = mongoose.model('Tour',tourSchema)
 

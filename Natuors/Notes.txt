@@ -458,3 +458,30 @@ ________________________________________________________________________________
 8) lets keep tour and user two separate entities in database by just Referencing
    we expect the type of each element in guide array is to be mongoDB ID and just ref:'User'  and we do not require
    even User imported 
+
+   _____________________________________________________________________________________________________________________________________
+    1) Using populated process inorder to get tour guides whenever we query for a certain route
+        a) in this process result will show like embedded document but there is just a Reference and data in different
+         document.
+         b) we have to use it in query is .populate e.g
+         await Tour.findById(req.params.id).populate({
+            path:'guides',
+            select:'-__v -passwordChangedAt'
+        });
+
+         c) we used only on getTour so inorder to use it for gettours we use it in query middleware
+   
+   2) created a Review model with reference with user and tour
+
+   3) a)getAllReviews and createReview are two controllers 
+      b)the we created routes for these endpoints
+      c)we mount that router in app.js
+      d)for create we used protect and restrictTo(user) controllers 
+   
+   4) populate the reviews -> as we have two references tour and user we have to populate it twice
+
+   5) virtual populate :->
+      for each tour we can do child referencing we can keep array of reviews but that array can grow 
+         indefinitely
+      So with virtual populate we have can populate all reviews for certain tour without keeping an array
+      

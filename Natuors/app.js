@@ -263,7 +263,7 @@ app.post('/api/v1/tours',createTour)
 // one separate route for each resource
 const tourRouter = require('./routes/tourRoutes');
 const UserRouter = require('./routes/userRoutes');
-
+const reviewRouter = require('./routes/reviewRoutes')
 
 //tourRouter.route('/').get(getTours).post(createTour)
 
@@ -274,6 +274,7 @@ const UserRouter = require('./routes/userRoutes');
 
 app.use('/api/v1/tours',tourRouter)
 app.use('/api/v1/users',UserRouter)
+app.use('/api/v1/reviews',reviewRouter)
 
 app.all('*',(req,res,next)=>{
    /* res.status(404).json({
