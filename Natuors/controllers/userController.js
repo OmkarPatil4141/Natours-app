@@ -2,6 +2,9 @@ const User = require('./../Models/userModel');
 const catchAsync = require('./../utils/catchAsync')
 const AppError = require('./../utils/appError')
 
+const factory = require('./handleFactory')
+
+
 
 
 const filterObj = (obj, ...allowedFields)=>{
@@ -56,44 +59,20 @@ exports.updateMe = catchAsync(async(req,res,next)=>{
 })
 
 
-  exports.getAllUsers = catchAsync(async(req,res,next)=>{
-
-    const users = await User.find();
-
-    //send rs
-    res.status(200).json({
-      status:"success",
-      results:users.length,
-      data : {
-        users
-      }  
-  });
-});
-
-  exports.getUser = (req,res)=>{
-    res.status(500).json({
-        status : "fail",
-        message : "This route is not yet implemented"
-    })
-}
-
+  //we not chamged because here it not used due to signup method
   exports.createUser = (req,res)=>{
     res.status(500).json({
         status : "fail",
-        message : "This route is not yet iplemented"
+        message : "This route is not defined...Please signup instead" 
     })
 }
 
-  exports.updateUser = (req,res)=>{
-    res.status(500).json({
-        status : "fail",
-        message : "This route is not yet iplemented"
-    })
-}
 
-  exports.delteUser = (req,res)=>{
-    res.status(500).json({
-        status : "fail",
-        message : "This route is not yet iplemented"
-    })
-}
+exports.getAllUsers = factory.getAll(User)
+
+exports.getUser = factory.getone(User);
+
+// Do not  update passwords with this
+  exports.updateUser = factory.updateOne(User)
+
+  exports.delteUser = factory.deleteOne(User)

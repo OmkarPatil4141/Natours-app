@@ -482,6 +482,24 @@ ________________________________________________________________________________
 
    5) virtual populate :->
       for each tour we can do child referencing we can keep array of reviews but that array can grow 
-         indefinitely
+         indefinitely (review madhe tour aal pn tour madhe review aal phije)
       So with virtual populate we have can populate all reviews for certain tour without keeping an array
-      
+
+_____________________________________________________________________________________________________________________________________
+
+🫵 Creating Nested routes
+   
+   1) lets create a simple nested route : when we creating a new review we can manually give tour id and user id but
+      so in real world user id should come from logged in user and tour id from current tour
+      POST  /tour/id_tour/reviews
+      GET  /tour/id_tour/reviews
+      GET  /tour/id_tour/reviews/review_id
+
+      so we have to create this routes in tourRoutes and upto /tour we have already mounted
+   
+   2) As we created a review route in tour route so we can use mergeparams the Advance mongoose feature 
+     we simply import review router in tour and then => router.use('/:tourId/reviews',reviewRouter)
+     and to access tourId =>  const router = express.Router({mergeParams:true})
+
+   3) lets create a nested get endpoint
+

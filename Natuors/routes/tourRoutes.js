@@ -5,11 +5,21 @@ const tourController = require('../controllers/tourController')
 
 const authController = require('./../controllers/authController')
 
+const reviewRouter = require('./../routes/reviewRoutes')
+
 
 //mounting
 const router = express.Router();
 
 // router.param('id',tourController.checkId)
+
+
+
+// router
+// .route('/:tourId/reviews')
+// .post(authController.protect,authController.restrictTo('user'),reviewController.createReview)
+
+router.use('/:tourId/reviews',reviewRouter)
 
 router
  .route('/monthly-plan/:year')
@@ -33,7 +43,10 @@ router
 router
 .route('/:id')
 .get(tourController.getTour)
-.delete(authController.protect, authController.restrictTo('admin','lead-guide'),tourController.delteTour)
+.delete(authController.protect, authController.restrictTo('admin','lead-guide'),tourController.deleteTour)
 .patch(tourController.updateTour)
+
+
+
 
 module.exports = router

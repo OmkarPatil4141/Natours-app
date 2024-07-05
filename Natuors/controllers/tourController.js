@@ -2,11 +2,12 @@
 // const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`))
 
 const Tour = require('../Models/tourModel')
-const APIFeature = require('../utils/apiFeatures');
 
 const AppError = require('../utils/appError');
 
 const catchAsync = require('../utils/catchAsync')
+
+const factory = require('./handleFactory')
 
 exports.aliasTopTours = (req,res,next) =>{
 
@@ -132,96 +133,14 @@ exports.getTourStats = catchAsync(async(req,res,next)=>{
 /////////////////////////////////
 //Method 1 of creating document ->Tour.create({})
 ////////////////////////////////
-exports.createTour = catchAsync(async(req,res,next) =>{
-    
-    const newTour = await Tour.create(req.body);
-    res.status(200).json({
-    status:"success",
-    dats : {
-    tour : newTour
-    }
-    })
-    })
+exports.createTour = factory.createone(Tour)
 
- exports.getTours = catchAsync(async(req,res,next)=>{
-  
-    //Execute Query
-    const features = new APIFeature(Tour.find(),req.query).filter().sort().limitFields().paginate();
-    const tours = await features.query;
-        res.status(200).json({
-            "status":"success",
-            result : tours.length,
-            data : {
-                tours
-            }
-        })
-    })
+ exports.getTours = factory.getAll(Tour)
    
 
- exports.getTour = catchAsync(async(req,res,next)=>{
-   
-        const tour = await Tour.findById(req.params.id)
-        // instead by findID we can use findone like
-        // Tour.findOne({_id:666d7cd402379557e484e691})
-
-        //added 404 error with 
-        if(!tour)
-        {
-            return next(new AppError('No tour found with that id',404))
-        }
-        res.status(200).json({
-            "status":"success",
-            data : {
-                tour
-            }  
-        })
-  
-})
-
-
-
- exports.updateTour = catchAsync (async (req,res,next)=>{
-    
-    const tour = await Tour.findByIdAndUpdate(req.params.id,req.body,{
-            new:true,
-            runValidators:true
-        });
-        //added 404 error with 
-        if(!tour)
-        {
-            return next(new AppError('No tour found with that id',404))
-        }
-
-        res.status(200).json({
-            status:"success",
-            data:{
-                tour
-            }
-        })
-    
-})
-
-exports.delteTour = catchAsync(async(req,res,next)=>{
- 
-        // const del = await Tour.deleteOne(req.params.id)
-      const tour =   await Tour.findByIdAndDelete(req.params.id);
-        //{_id:"666d7cd402379557e484e691"}
-
-        //added 404 error with 
-        if(!tour)
-            {
-                return next(new AppError('No tour found with that id',404))
-            }
-
-        res.status(204).json({  //204 -> no content     
-            status : "Success",
-            data : null
-        })
- 
-    
-})
- 
-
+ exports.getTour = factory.getone(Tour, { path:'reviews' })
+ exports.updateTour = factory.updateOne(Tour)
+exports.deleteTour = factory.deleteOne(Tour) 
 ////////////////////////////////////////////////////////////////////////////////
 //
 //Deleted ones 
