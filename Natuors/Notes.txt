@@ -503,3 +503,40 @@ ________________________________________________________________________________
 
    3) lets create a nested get endpoint
 
+   4) Building Handler factory function: delete , get create ans all
+         hadler function to delete review documents but also documents from other other collections all with 
+         one simple function
+_____________________________________________________________________________________________________________________________________
+
+1) implementing /me route in which just add one middleware, add route  and call getuser controller
+
+2) Fix some auth and auth in some resources
+
+3) importing dev data and testing Apis
+
+4) Increasing read performance by indexes 
+   a)  const doc = await features.query.explain(); when we add explain the in post man it give 
+                   "executionStats": {
+                    "executionSuccess": true,
+                    "nReturned": 3,
+                    "executionTimeMillis": 0,
+                    "totalKeysExamined": 0,
+                    "totalDocsExamined": 9,}
+
+                    object in which for query output it will reviewing all the tours it will reduce read performance
+                    so we can use concept of indexes
+
+         b)by default mongo uses _id as ordered index so whenever we query mongo will search through this 
+                     ordered index
+
+          c) so we are going to apply index on price --> tourSchema.index( { price:1 } )
+
+                  now below result is after applying query
+
+                     "executionStats": {
+                    "executionSuccess": true,
+                    "nReturned": 3,
+                    "executionTimeMillis": 1,
+                    "totalKeysExamined": 3,
+                    "totalDocsExamined": 3,}
+           d) We can also create compound indexes also

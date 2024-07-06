@@ -3,6 +3,8 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 
 const Tour = require('../../Models/tourModel');
+const Review = require('../../Models/reviewModel');
+const User = require('../../Models/userModel');
 
 // Load environment variables from .env file
 dotenv.config({path: './../../config.env'});
@@ -28,25 +30,33 @@ mongoose.connect(DB, {
 
 // Read file synchronously
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
+const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
+const reviews = JSON.parse(fs.readFileSync(`${__dirname}/reviews.json`, 'utf-8'));
 
 // Import data into DB
 const importData = async () => {
     try {
         await Tour.create(tours); // create also works with array of objects
-        console.log("Data successfully loaded");
+        await User.create(users, { validateBeforeSave: false }); // create also works with array of objects
+        await Review.create(reviews); // create also works with array of objects
+        console.log("Data successfully loaded🥳");
     } catch (err) {
         console.log(err);
     }
+    process.exit();
 }
 
 // Delete data from DB
 const deleteData = async () => {
     try {
         await Tour.deleteMany();
-        console.log("Data deleted successfully");
+        await User.deleteMany();
+        await Review.deleteMany();
+        console.log("Data deleted successfully🥳");
     } catch (err) {
         console.log(err);
     }
+    process.exit();
 }
 
 // Use command-line arguments to choose the operation

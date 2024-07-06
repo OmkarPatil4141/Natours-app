@@ -23,7 +23,7 @@ router.use('/:tourId/reviews',reviewRouter)
 
 router
  .route('/monthly-plan/:year')
- .get(tourController.getMonthlyPlan)
+ .get(authController.protect, authController.restrictTo('admin','lead-guide','guide'),tourController.getMonthlyPlan)
 
 
 router
@@ -36,15 +36,15 @@ router
 
 router
 .route('/')
-.get(authController.protect,tourController.getTours)
-.post(tourController.createTour)
+.get(tourController.getTours)
+.post(authController.protect, authController.restrictTo('admin','lead-guide'),tourController.createTour)
 // .post(tourController.checkBody,tourController.createTour)
 
 router
 .route('/:id')
 .get(tourController.getTour)
 .delete(authController.protect, authController.restrictTo('admin','lead-guide'),tourController.deleteTour)
-.patch(tourController.updateTour)
+.patch(authController.protect, authController.restrictTo('admin','lead-guide'),tourController.updateTour)
 
 
 
