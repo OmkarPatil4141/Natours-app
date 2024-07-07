@@ -539,4 +539,20 @@ ________________________________________________________________________________
                     "executionTimeMillis": 1,
                     "totalKeysExamined": 3,
                     "totalDocsExamined": 3,}
-           d) We can also create compound indexes also
+           d) We can also create compound indexes also, but there is same no attribute in  compound and indivisual attribute
+_____________________________________________________________________________________________________________________________________
+
+1) lets calculate the Average rating because we have to calculate it whenever we got new rating or anyy one update or delete rating 
+   we are going to use statics method in this method this refers to current model
+
+2) we are calculating review statstics for delete and update in reviews
+   a) for findOneAnd we dont have access to document but we have access to query so using that query we can get 
+      required document
+3) preventing users to give multiple reviews for same tour so we have users id and tour id if same review coming then 
+   we can prevent we can create unique compound index
+
+4) geospetial querries inorder to implelment a really cool feature  to provide search tours within a certain distance 
+   of a specified path 
+
+5)Lets find the distances of all tours from a certain point using geospetial Aggregation
+   for geospetial Aggregation there is only one stage  $geoNear and it requires at least one field with indexing

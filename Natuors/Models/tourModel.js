@@ -52,6 +52,7 @@ const tourSchema = new mongoose.Schema({
         //Validator
         min:[1.0, "Ratings must be above 1.0"],
         max:[5.0, "Ratings must be below 5.0"],
+        set: val => Math.round(val *10 ) / 10
     },
 
     ratingsQuantity:
@@ -150,6 +151,7 @@ const tourSchema = new mongoose.Schema({
 
 tourSchema.index( { price:1 ,ratingsAverage:-1} )
 tourSchema.index({ slug:1 })
+tourSchema.index({ startLocation : '2dsphere' })
 
 //defining virtula parameters
 tourSchema.virtual('durationWeeks').get(function(){
