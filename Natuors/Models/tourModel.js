@@ -148,10 +148,10 @@ const tourSchema = new mongoose.Schema({
 })
 
 //lets create index
-
 tourSchema.index( { price:1 ,ratingsAverage:-1} )
 tourSchema.index({ slug:1 })
 tourSchema.index({ startLocation : '2dsphere' })
+
 
 //defining virtula parameters
 tourSchema.virtual('durationWeeks').get(function(){
@@ -202,6 +202,18 @@ tourSchema.post('save',function(doc,next) {
 */
 
 //Query Middleware 
+
+
+//it does not run for gettour as there is different handler and
+//there we have used FindById() so instead of making different miidleware we can use regular expression
+// tourSchema.pre('find',function(next){
+    tourSchema.pre(/^find/,function(next){
+        this.find({secretTour:{$ne:true}})
+        this.start = Date.now();
+        next();
+    })
+
+
 tourSchema.pre(/^find/,function(next){
     this.populate({
         path:'guides',
@@ -210,19 +222,10 @@ tourSchema.pre(/^find/,function(next){
     next();
 })
  
-//it does not run for gettour as there is different handler and
-//there we have used FindById() so instead of making different miidleware we can use regular expression
-// tourSchema.pre('find',function(next){
-tourSchema.pre(/^find/,function(next){
-    this.find({secretTour:{$ne:true}})
-    this.start = Date.now();
-    next();
-})
-
 
 tourSchema.post(/^find/, function(docs,next){
     // console.log(docs);
-    // console.log(`Querry took ${Date.now()-this.start} milliseconds`);
+    console.log(`Querry took ${Date.now()-this.start} milliseconds`);
     next();
 })
 
@@ -233,6 +236,8 @@ tourSchema.post(/^find/, function(docs,next){
 //     this.pipeline().unshift({$match:{secretTour:{$ne:true}}})
 //     next();
 // })
+
+
 //In order to use schema we have to use model
 const Tour = mongoose.model('Tour',tourSchema)
 

@@ -556,3 +556,17 @@ ________________________________________________________________________________
 
 5)Lets find the distances of all tours from a certain point using geospetial Aggregation
    for geospetial Aggregation there is only one stage  $geoNear and it requires at least one field with indexing
+
+
+_____________________________________________________________________________________________________________________________________
+1) setting up pug in express :
+   we are going to template engine then we use that templates for rendering purpose we can easilly fill up that templates
+      app.set('view engine', 'pug');
+ we can also use handlebar or ejs but we are  familiar with 
+   app.get('/',(req,res)=>{
+    res.status(200).render('base')
+}) 
+it will check in our specified folder which is path.join(views)
+
+2) pug is white space sensitive syntax for writing html
+ 
