@@ -569,4 +569,9 @@ ________________________________________________________________________________
 it will check in our specified folder which is path.join(views)
 
 2) pug is white space sensitive syntax for writing html
+3) 
+_____________________________________________________________________________________________________________________________________
+
+1)Created a seperate file for view as viewRoutes
+
  

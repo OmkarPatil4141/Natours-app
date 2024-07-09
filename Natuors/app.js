@@ -93,29 +93,12 @@ app.use((req,res,next)=>{
 //in order to use it in different files (routes folder)
 // one separate route for each resource
 
-app.get('/',(req,res)=>{
-    res.status(200).render('base',{
-        tour:'The Forest Hiker',
-        user:'Omkar'
-    })
-})
 
-app.get('/overview',(req,res)=>{
-    res.status(200).render('overview',{
-        title:'All the tours',
-       
-    })
-})
-app.get('/tour',(req,res)=>{
-    res.status(200).render('tour',{
-        title:'The Forest Hiker tour',
-       
-    })
-})
 
 const tourRouter = require('./routes/tourRoutes');
 const UserRouter = require('./routes/userRoutes');
-const reviewRouter = require('./routes/reviewRoutes')
+const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 //tourRouter.route('/').get(getTours).post(createTour)
 
@@ -127,6 +110,7 @@ const reviewRouter = require('./routes/reviewRoutes')
 app.use('/api/v1/tours',tourRouter)
 app.use('/api/v1/users',UserRouter)
 app.use('/api/v1/reviews',reviewRouter)
+app.use('/',viewRouter)
 
 app.all('*',(req,res,next)=>{
    /* res.status(404).json({
