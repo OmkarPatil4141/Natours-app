@@ -118,7 +118,7 @@ const tourSchema = new mongoose.Schema({
         address:String,
         description:String
     },
-    locations:{
+    locations:[{
         type:{
             type:String,
             default:'Point',
@@ -128,7 +128,7 @@ const tourSchema = new mongoose.Schema({
           address:String,
           description:String,
           day:Number
-    },
+    }],
     // guides:Array
     guides:[{
             type:mongoose.Schema.ObjectId,

@@ -1,7 +1,7 @@
 const Tour = require('../Models/tourModel')
 const catchAsync = require('../utils/catchAsync')
 
-exports.getOverview = catchAsync(async (req,res)=>{
+exports.getOverview = catchAsync(async (req,res,next)=>{
 
     //1) Get tour data from colection
     const tours = await Tour.find();
@@ -12,12 +12,12 @@ exports.getOverview = catchAsync(async (req,res)=>{
     //3) Render that template using tour data from 1)
     res.status(200).render('overview',{
         title:'All the tours',
-        tours:tours
+        tours
        
     });
 });
 
-exports.getTour = catchAsync(async(req,res)=>{
+exports.getTour = catchAsync(async(req,res,next)=>{
     //1) Get the data , for requested tour (including reviews and guides)
     
     const tour =  await Tour.findOne({slug:req.params.slug}).populate({
@@ -29,7 +29,13 @@ exports.getTour = catchAsync(async(req,res)=>{
 
     //3) Render that template using tour data from 1)
     res.status(200).render('tour',{
-        title:'The Forest Hiker tour',
+        title:`${tour.name} Tour`,
         tour
+    })
+})
+
+exports.getLoginForm = catchAsync(async(req,res,next)=>{
+    res.status(200).render('login',{
+        title:'Log into your Account'
     })
 })

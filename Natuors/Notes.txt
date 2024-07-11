@@ -319,7 +319,7 @@ ________________________________________________________________________________
          create a reset token(not a JWT token) sent it to email address provided 
       1. we will fetch user based on email and check that exist or not 
       2. we create a reset token( use instance method ) using crypto module crypto.randomBytes(32).toString('hex') //32 :length of token and then
-         converting to hexadecimal string   
+         converting to hexadecimal string    
 2)  User sends that token from his email along with a new password in order to update his password
       1. In utils folder create a function for how to send mail in node js using nodemailer
          1. we have to create a transporter => it is a service that actuallly send an email e.g. GMAIL but we are not going to use 
@@ -574,4 +574,12 @@ ________________________________________________________________________________
 
 1)Created a seperate file for view as viewRoutes
 
- 
+2) using mapbox instead of google maps beacause it is using credit card details
+
+3) that animation of map is due to fitBounds method
+
+4) by adding markers at our tours and also added the popups
+
+5) for loging we add event listner listenning on our submit event on our login form
+
+6) Inorder to do HTTPS request for login axioms

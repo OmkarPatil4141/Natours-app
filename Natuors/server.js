@@ -12,11 +12,16 @@ dotenv.config({path:'./config.env'})
 
 const mongoose = require('mongoose')
 
+const cors = require('cors');
+
 const app = require('./app')
+
 
 const DB = process.env.DATABASE.replace('<password>', process.env.DB_PASSWORD)
 
-console.log(process.env.DATABASE);
+// console.log(process.env.DATABASE);
+
+app.use(cors());
 
 mongoose//.connect(process.env.DATABASE_LOCAL,{
     .connect(DB,{

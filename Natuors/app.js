@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname,'public')))
 
 
 //secuity http headers
-app.use(helmet())
+// app.use(helmet())
 
 //development logging 
 if(process.env.NODE_ENV === 'development')
